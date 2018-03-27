@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<p class='twitter-highlight'>Przeprowadzki apka spółka z.o.o</p>
+<p>
+	<a href="../user/home">Klient</a>
+	<a href="../driver/home">Kierowca</a>
+	<a href="../user/logout">Logout</a>
+	
+</p>
