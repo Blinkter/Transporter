@@ -16,7 +16,7 @@
 		<a href="<c:url value='../transaction/add'/>">Zleć przesyłkę</a>
 	</h2>
 	<h2>
-		<a href="<c:url value='../transaction/list?id=${user.id}'/>">Sprawdź
+		<a href="<c:url value='../transaction/userlist?id=${user.id}'/>">Sprawdź
 			status zamówienia</a>
 	</h2>
 

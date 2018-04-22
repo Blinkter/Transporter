@@ -30,7 +30,7 @@
 				<td>${transaction.origin}</td>
 				<td>${transaction.destination}</td>
 				<td>${transaction.description}</td>
-				<td><f:formatDate pattern="yyyy-MM-dd hh:mm"
+				<td><f:formatDate pattern="yyyy-MM-dd"
 						value="${transaction.plannedDate }" /></td>
 				<td>${transaction.distance}</td>
 				<td>${transaction.price}</td>

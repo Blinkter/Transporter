@@ -34,7 +34,7 @@ public class TransactionController {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
-	@GetMapping(path = "/transaction/list")
+	@GetMapping(path = "/transaction/showall")
 	public String showAllTransactions(final Model model) {
 
 		final List<Transaction> transactions = transactionRepository.findAll();
@@ -43,11 +43,10 @@ public class TransactionController {
 		return "transaction/list";
 	}
 
-	@GetMapping(path = "/transaction/list?id=?")
+	@GetMapping(path = "/transaction/userlist")
 	public String showTransactionsById(final @RequestParam Long id, final Model model) {
 
 		final List<Transaction> transactions = transactionRepository.findByUserId(id);
-
 		model.addAttribute("transactions", transactions);
 		return "transaction/list";
 	}
