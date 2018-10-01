@@ -1,9 +1,8 @@
-package transporter.repository;
+package com.transporter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import transporter.entity.Driver;
-import transporter.entity.User;
+import com.transporter.entity.Driver;
 
 public interface DriverRepository extends JpaRepository<Driver, Long>{
 

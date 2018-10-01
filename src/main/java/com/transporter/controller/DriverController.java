@@ -1,4 +1,4 @@
-package transporter.controller;
+package com.transporter.controller;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import transporter.entity.Driver;
-import transporter.repository.DriverRepository;
+import com.transporter.entity.Driver;
+import com.transporter.repository.DriverRepository;
 
 @Controller
 public class DriverController {

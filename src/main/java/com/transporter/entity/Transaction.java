@@ -1,4 +1,4 @@
-package transporter.entity;
+package com.transporter.entity;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package transporter.bean;
+package com.transporter.bean;
 
 import javax.servlet.http.HttpSession;
 

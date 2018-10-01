@@ -1,8 +1,9 @@
-package transporter.entity;
+package com.transporter.entity;
 
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,8 +13,9 @@ import javax.persistence.Table;
 import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "drivers")
+public class Driver {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,28 +27,15 @@ public class User {
 	private String firstName;
 
 	private String lastName;
-
-	private String email;
-
-	private String phoneNumber;
-
-	@OneToMany(mappedBy = "user")
-	private List<Transaction> transactions;
 	
-	public User() {
-	}
-
-	public User(Long id, String login, String password, String firstName, String lastName, String email,
-			String phoneNumber, List<Transaction> transactions) {
-		this.id = id;
-		this.login = login;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.transactions = transactions;
-	}
+	private String email;
+	
+	private String phoneNumber;
+	
+	private Float pricePerKm;
+	
+	@OneToMany(mappedBy = "driver", fetch = FetchType.EAGER)
+	private List<Transaction> transactions;
 
 	public Long getId() {
 		return id;
@@ -106,6 +95,14 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public Float getPricePerKm() {
+		return pricePerKm;
+	}
+
+	public void setPricePerKm(Float pricePerKm) {
+		this.pricePerKm = pricePerKm;
+	}
+
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
@@ -114,12 +111,11 @@ public class User {
 		this.transactions = transactions;
 	}
 
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		return "Driver [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
-
 	
-
+	
+	
 }

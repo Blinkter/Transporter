@@ -1,4 +1,4 @@
-package transporter.converter;
+package com.transporter.converter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

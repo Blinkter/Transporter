@@ -1,4 +1,4 @@
-package transporter.controller;
+package com.transporter.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import transporter.bean.SessionManager;
-import transporter.entity.Driver;
-import transporter.entity.User;
-import transporter.repository.DriverRepository;
-import transporter.repository.UserRepository;
+import com.transporter.bean.SessionController;
+import com.transporter.entity.Driver;
+import com.transporter.entity.User;
+import com.transporter.repository.DriverRepository;
+import com.transporter.repository.UserRepository;
 
 @Controller
 public class LoginController {
@@ -50,7 +50,7 @@ public class LoginController {
 		User user = this.userRepository.findOneByLogin(login);
 		
 		if (user != null && user.isPasswordCorrect(password)) {
-			HttpSession session = SessionManager.session();
+			HttpSession session = SessionController.session();
 			session.setAttribute("user", user);
 			ra.addFlashAttribute("msg", "Jestes zalogowany!");	
 			return "redirect:/user/home";
@@ -79,7 +79,7 @@ public class LoginController {
 	@GetMapping("user/logout")
 	  public String logout(Model model) {
 	    model.addAttribute("user", new User());
-	    HttpSession httpSession = SessionManager.session();
+	    HttpSession httpSession = SessionController.session();
 	    httpSession.invalidate();
 	    return "redirect:../user/login";
 	  }
@@ -96,7 +96,7 @@ public class LoginController {
 		Driver driver = this.driverRepository.findOneByLogin(login);
 		
 		if (driver != null && driver.isPasswordCorrect(password)) {
-			HttpSession session = SessionManager.session();
+			HttpSession session = SessionController.session();
 			session.setAttribute("user", driver);
 			ra.addFlashAttribute("msg", "Jestes zalogowany!");	
 			return "redirect:/driver/home";
