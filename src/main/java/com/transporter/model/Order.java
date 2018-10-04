@@ -1,4 +1,4 @@
-package com.transporter.entity;
+package com.transporter.model;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,14 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
-@Table(name = "transactions")
-public class Transaction {
+@Table(name = "orders")
+public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//-----------------------------------------------------------------------------
+	
+	
 	private Long id;
 	private String origin;
 	private String destination;
@@ -32,14 +38,14 @@ public class Transaction {
 	private User user;
 
 	// @NotNull
-	@ManyToOne // (fetch = FetchType.EAGER)
+	@OneToOne // (fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id")
 	private Driver driver;
 
-	public Transaction() {
+	public Order() {
 	}
 
-	public Transaction(Long id, String origin, String destination, String description, Date plannedDate,
+	public Order(Long id, String origin, String destination, String description, Date plannedDate,
 			Double distance, Float price, Date acceptedDate) {
 		this.id = id;
 		this.origin = origin;

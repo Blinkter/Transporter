@@ -1,4 +1,4 @@
-package com.transporter.conf;
+package com.transporter.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

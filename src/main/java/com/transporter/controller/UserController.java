@@ -1,6 +1,7 @@
 package com.transporter.controller;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.transporter.entity.User;
+import com.transporter.model.User;
 import com.transporter.repository.UserRepository;
 
 @Controller
@@ -49,9 +50,9 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/edit")
-	public String showEditForm(final @RequestParam(name = "id", required = true) long id, final Model model) {
+	public String showEditForm(final @RequestParam(name = "id", required = true) Long id, final Model model) {
 
-		final User user = userRepository.findOne(id);
+		final Optional<User> user = userRepository.findById(id);
 
 		model.addAttribute("user", user);
 		return "user/edit";
@@ -68,18 +69,18 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/delete")
-	public String showDeleteConfirmForm(final @RequestParam(name = "id", required = true) long id, final Model model) {
+	public String showDeleteConfirmForm(final @RequestParam(name = "id", required = true) Long id, final Model model) {
 
-		final User user = userRepository.findOne(id);
+		final Optional<User> user = userRepository.findById(id);
 		model.addAttribute("user", user);
 
 		return "user/delete";
 	}
 
 	@PostMapping(path = "/delete")
-	public String deleteUser(final @RequestParam(name = "id", required = true) long id) {
+	public String deleteUser(final @RequestParam(name = "id", required = true) Long id) {
 
-		userRepository.delete(id);
+		userRepository.deleteById(id);
 		return "redirect:list";
 	}
 	

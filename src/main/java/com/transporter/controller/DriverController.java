@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.transporter.entity.Driver;
+import com.transporter.model.Driver;
 import com.transporter.repository.DriverRepository;
 
-@Controller
+//@Controller
 public class DriverController {
 
 	@Autowired

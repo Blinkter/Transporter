@@ -12,52 +12,53 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
+import com.transporter.model.Order;
+import com.transporter.service.OrderService;
+import com.transporter.service.WayCalc;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import com.transporter.entity.Transaction;
-import com.transporter.repository.TransactionRepository;
-import com.transporter.service.WayCalc;
 
 @Controller
-public class TransactionController {
+@RequestMapping("/order")
+public class OrderController {
 
 	private static final String API_KEY = "AIzaSyDGBhBYu1xbTGMhT-gHUs2evHxmsLdtSsU";
 
 	@Autowired
-	private TransactionRepository transactionRepository;
+	private OrderService orderService;
 
-	@GetMapping(path = "/transaction/showall")
+	@GetMapping(path = "/list")
 	public String showAllTransactions(final Model model) {
 
-		final List<Transaction> transactions = transactionRepository.findAll();
+		final List<Order> transactions = orderService.findAll();
 
 		model.addAttribute("transactions", transactions);
-		return "transaction/list";
+		return "order/list";
 	}
 
 	@GetMapping(path = "/transaction/userlist")
 	public String showTransactionsById(final @RequestParam Long id, final Model model) {
 
-		final List<Transaction> transactions = transactionRepository.findByUserId(id);
+		final List<Order> transactions = orderService.findByUserId(id);
 		model.addAttribute("transactions", transactions);
 		return "transaction/list";
 	}
 
 	@GetMapping(path = "/transaction/add")
 	public String showAddTransactionForm(final Model model) {
-		model.addAttribute("transaction", new Transaction());
+		model.addAttribute("transaction", new Order());
 		return "transaction/add";
 	}
 
 	@PostMapping("/transaction/add")
-	public String processAddTransactionForm(@Valid @ModelAttribute final Transaction transaction,
+	public String processAddTransactionForm(@Valid @ModelAttribute final Order transaction,
 			BindingResult bindingResult) throws IOException {
 
 		if (bindingResult.hasErrors()) {
@@ -65,7 +66,7 @@ public class TransactionController {
 		} else {
 			double calc = new WayCalc().calculator(transaction.getOrigin(), transaction.getDestination() );
 			transaction.setDistance(calc);
-			this.transactionRepository.save(transaction);
+			this.orderService.save(transaction);
 			return "redirect:/";
 		}
 	}
