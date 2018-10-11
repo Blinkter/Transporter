@@ -13,16 +13,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "role")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "role_id")
-	private int id;
+	private Long id;
 	@Column(name = "role")
 	private String role;
+
+	public Role() {}
+
+	public Role(Long id, String role) {
+		super();
+		this.id = id;
+		this.role = role;
+	}
 }

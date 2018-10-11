@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-@Entity
-@Table(name = "drivers")
+//@Entity
+//@Table(name = "drivers")
 public class Driver {
 
 	@Id
