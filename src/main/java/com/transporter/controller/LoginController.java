@@ -35,7 +35,7 @@ public class LoginController {
 	@GetMapping("/")
 	public ModelAndView index11() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
+		modelAndView.setViewName("templates/login");
 		modelAndView.addObject("message", "Baeldung");
 		return modelAndView;
 	}
@@ -43,8 +43,7 @@ public class LoginController {
 	@GetMapping("/login")
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
-		modelAndView.addObject("message", "Baeldung");
+		modelAndView.setViewName("/login");
 		return modelAndView;
 	}
 	
