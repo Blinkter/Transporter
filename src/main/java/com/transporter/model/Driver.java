@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.mindrot.jbcrypt.BCrypt;
+//import org.mindrot.jbcrypt.BCrypt;
 
 //@Entity
 //@Table(name = "drivers")
@@ -57,11 +57,11 @@ public class Driver {
 		return password;
 	}
 	public void setPassword(String password) {
-		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+//		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
-	public boolean isPasswordCorrect(String pwd) {
-		return BCrypt.checkpw(pwd, this.password);
-	}
+//	public boolean isPasswordCorrect(String pwd) {
+////		return BCrypt.checkpw(pwd, this.password);
+//	}
 
 	public String getFirstName() {
 		return firstName;

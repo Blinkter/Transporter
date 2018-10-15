@@ -6,16 +6,13 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,10 +20,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.transporter.repositories", entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class AppConfiguration implements WebMvcConfigurer {
@@ -45,27 +40,14 @@ public class AppConfiguration implements WebMvcConfigurer {
 		return bCryptPasswordEncoder;
 	}
 
-	/*
-	 * Populate SpringBoot DataSourceProperties object directly from properties
-	 * file.
-	 */
-	@Bean
-	@Primary
-	public DataSourceProperties dataSourceProperties() {
-		return new DataSourceProperties();
-	}
-
-	/*
-	 * Configure HikariCP pooled DataSource.
-	 */
 	@Bean
 	public DataSource dataSource() {
-		DataSourceProperties dataSourceProperties = dataSourceProperties();
-		HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder.create(dataSourceProperties.getClassLoader())
-				.driverClassName(dataSourceProperties.getDriverClassName()).url(dataSourceProperties.getUrl())
-				.username(dataSourceProperties.getUsername()).password(dataSourceProperties.getPassword())
-				.type(HikariDataSource.class).build();
-		dataSource.setMaximumPoolSize(maxPoolSize);
+
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(environment.getRequiredProperty("spring.datasource.driver-class-name"));
+		dataSource.setUrl(environment.getRequiredProperty("spring.datasource.url"));
+		dataSource.setUsername(environment.getRequiredProperty("spring.datasource.username"));
+		dataSource.setPassword(environment.getRequiredProperty("spring.datasource.password"));
 		return dataSource;
 	}
 
@@ -77,29 +59,27 @@ public class AppConfiguration implements WebMvcConfigurer {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setDataSource(dataSource());
 		factoryBean.setPackagesToScan(new String[] { "com.transporter.model" });
-		factoryBean.setJpaProperties(jpaProperties());
+		factoryBean.setJpaProperties(hibernateProperties());
 		return factoryBean;
 	}
-	
+
 	/*
-     * Specify any provider specific properties.
-     */
-    private Properties jpaProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.properties.hibernate.dialect"));
-        properties.put("hibernate.ddl.auto", environment.getRequiredProperty("spring.jpa.hibernate.ddl-auto"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("spring.jpa.show-sql"));
-        if(StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.myApp.defaultSchema"))){
-            properties.put("hibernate.default_schema", environment.getRequiredProperty("datasource.sampleapp.defaultSchema"));
-        }
-        return properties;
-    }
-    
-    @Bean
-    @Autowired
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(emf);
-        return txManager;
-    }
+	 * Specify any provider specific properties.
+	 */
+	private Properties hibernateProperties() {
+		Properties properties = new Properties();
+		properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.properties.hibernate.dialect"));
+		properties.put("hibernate.ddl.auto", environment.getRequiredProperty("spring.jpa.hibernate.ddl-auto"));
+		properties.put("hibernate.show_sql", environment.getRequiredProperty("spring.jpa.show-sql"));
+
+		return properties;
+	}
+
+	@Bean
+	@Autowired
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(emf);
+		return txManager;
+	}
 }

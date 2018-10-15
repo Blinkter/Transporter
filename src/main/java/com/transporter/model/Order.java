@@ -20,10 +20,9 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	//-----------------------------------------------------------------------------
 	
-	
-	private Long id;
 	private String origin;
 	private String destination;
 	private String description;
