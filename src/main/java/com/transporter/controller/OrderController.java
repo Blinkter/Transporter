@@ -70,39 +70,39 @@ public class OrderController {
 			return "redirect:/";
 		}
 	}
-
-	@GetMapping("/distance")
-	@ResponseBody
-	public double Route(@RequestParam("origin") String origin, @RequestParam("destination") String destination)
-			throws IOException {
-
-		OkHttpClient client = new OkHttpClient();
-
-		String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations="
-				+ destination + "&key=" + API_KEY;
-		Request request = new Request.Builder().url(url).build();
-
-		Response response = client.newCall(request).execute();
-		final String json = response.body().string();
-		
-		JsonFactory factory = new JsonFactory();
-		//JsonParser parser = new factory.createParser();
-
-//		JSONObject jsonobj;
-		double distance = -1;
-//		try {
-//			jsonobj = (JSONObject) parser.parse(json);
-//			JSONArray dist = (JSONArray) jsonobj.get("rows");
-//			JSONObject obj2 = (JSONObject) dist.get(0);
-//			JSONArray disting = (JSONArray) obj2.get("elements");
-//			JSONObject obj3 = (JSONObject) disting.get(0);
-//			JSONObject obj4 = (JSONObject) obj3.get("distance");
-//			JSONObject obj5 = (JSONObject) obj3.get("duration");
-//			distance = Integer.parseInt(obj4.get("value").toString());
-//			return distance;
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-		return distance;
-	}
+//TO DO
+//	@GetMapping("/distance")
+//	@ResponseBody
+//	public double Route(@RequestParam("origin") String origin, @RequestParam("destination") String destination)
+//			throws IOException {
+//
+//		OkHttpClient client = new OkHttpClient();
+//
+//		String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations="
+//				+ destination + "&key=" + API_KEY;
+//		Request request = new Request.Builder().url(url).build();
+//
+//		Response response = client.newCall(request).execute();
+//		final String json = response.body().string();
+//		
+//		JsonFactory factory = new JsonFactory();
+//		//JsonParser parser = new factory.createParser();
+//
+////		JSONObject jsonobj;
+//		double distance = -1;
+////		try {
+////			jsonobj = (JSONObject) parser.parse(json);
+////			JSONArray dist = (JSONArray) jsonobj.get("rows");
+////			JSONObject obj2 = (JSONObject) dist.get(0);
+////			JSONArray disting = (JSONArray) obj2.get("elements");
+////			JSONObject obj3 = (JSONObject) disting.get(0);
+////			JSONObject obj4 = (JSONObject) obj3.get("distance");
+////			JSONObject obj5 = (JSONObject) obj3.get("duration");
+////			distance = Integer.parseInt(obj4.get("value").toString());
+////			return distance;
+////		} catch (ParseException e) {
+////			e.printStackTrace();
+////		}
+//		return distance;
+//	}
 }
