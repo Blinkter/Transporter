@@ -6,13 +6,10 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
@@ -25,13 +22,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.transporter.repositories", entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
-@EnableTransactionManagement
+@EnableWebMvc
+@ComponentScan(basePackages = "com.transporter")
 @PropertySource("classpath:application.properties")
 public class AppConfiguration implements WebMvcConfigurer {
 
