@@ -30,14 +30,11 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.transporter")
-@PropertySource("classpath:application.properties")
+@PropertySource("application.properties")
 public class AppConfiguration implements WebMvcConfigurer {
 
 	@Autowired
 	private Environment environment;
-
-	@Value("${datasource.sampleapp.maxPoolSize:10}")
-	private int maxPoolSize = 5;
 
 	/*
 	 * Configure BCrypt password encoder.
@@ -48,18 +45,10 @@ public class AppConfiguration implements WebMvcConfigurer {
 		return bCryptPasswordEncoder;
 	}
 
-	@Bean
-    @Primary
-    @ConfigurationProperties(prefix = "datasource.sampleapp")
-    public DataSourceProperties dataSourceProperties(){
-        return new DataSourceProperties();
-    }
-	
-	
 	
 	 @Bean
 	    public DataSource dataSource() {
-	        DataSourceProperties dataSourceProperties = dataSourceProperties();
+	        DataSource dataSourceProperties = dataSource();
 	            HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder
 	                    .create(dataSourceProperties.getClassLoader())
 	                    .driverClassName(dataSourceProperties.getDriverClassName())
