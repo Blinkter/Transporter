@@ -25,6 +25,11 @@ public class WayCalc {
 //		final String json = response.body().string();
 		ObjectMapper mapper = new ObjectMapper();
 
+		public double calculator(String origin, String destination) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
 //		JSONParser parser = new JSONParser();
 //		JSONObject jsonobj;
 //		double distance = -1;
