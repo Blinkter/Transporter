@@ -1,5 +1,6 @@
 package com.transporter.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,13 +36,14 @@ public class Order {
 	private String description;
 	// -----------------------------------------------------------------------------
 	@NotEmpty
-	private Date plannedDate;
+	private LocalDate plannedDate;
 	// -----------------------------------------------------------------------------
 	private Double distance;
 	// -----------------------------------------------------------------------------
 	private Float price;
 	// -----------------------------------------------------------------------------
-	private Date acceptedDate;
+	@NotEmpty
+	private Boolean status;
 	// -----------------------------------------------------------------------------
 	
 	@ManyToOne 
@@ -63,9 +65,8 @@ public class Order {
 		this.origin = origin;
 		this.destination = destination;
 		this.description = description;
-		this.plannedDate = plannedDate;
 		this.distance = distance;
 		this.price = price;
-		this.acceptedDate = acceptedDate;
+		this.status = status;
 	}
 }
