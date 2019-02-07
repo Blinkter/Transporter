@@ -1,4 +1,4 @@
-package com.transporter.model;
+package com.transporter.entity;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -27,34 +24,25 @@ public class Order {
 	private Long id;
 	// -----------------------------------------------------------------------------
 	@NotEmpty
+	@Column(name = "origin")
 	private String origin;
 	// -----------------------------------------------------------------------------
 	@NotEmpty
+	@Column(name = "destination")
 	private String destination;
 	// -----------------------------------------------------------------------------
-	@NotEmpty
+	@Column(name = "description")	
 	private String description;
 	// -----------------------------------------------------------------------------
 	@NotEmpty
+	@Column(name = "planned_date")	
 	private LocalDate plannedDate;
 	// -----------------------------------------------------------------------------
 	private Double distance;
 	// -----------------------------------------------------------------------------
 	private Float price;
-	// -----------------------------------------------------------------------------
-	@NotEmpty
-	private Boolean status;
-	// -----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------	
 	
-	@ManyToOne 
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	@OneToOne 
-	@JoinColumn(name = "driver_id")
-	private Driver driver;
-	
-	// -----------------------------------------------------------------------------
 
 	public Order() {
 	}
@@ -67,6 +55,5 @@ public class Order {
 		this.description = description;
 		this.distance = distance;
 		this.price = price;
-		this.status = status;
 	}
 }

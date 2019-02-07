@@ -1,4 +1,4 @@
-package com.transporter.serviceImpl;
+package com.transporter.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.transporter.model.Role;
-import com.transporter.model.User;
-import com.transporter.repository.RoleRepository;
-import com.transporter.repository.UserRepository;
-import com.transporter.service.UserService;
+import com.transporter.dao.RoleRepository;
+import com.transporter.dao.UserRepository;
+import com.transporter.entity.Role;
+import com.transporter.entity.User;
 
-@Service("userService")
-public class UserServiceImpl implements UserService{
+//@Service("userService")
+public abstract class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
@@ -28,14 +27,14 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findByEmail(email);
 	}
 	
-	@Override
-	public void saveUser(User user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setActive(1);   
-		Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-        userRepository.save(user);
-	}
+//	@Override
+//	public void saveUser(User user) {
+//		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//		user.setActive(1);   
+//		Role userRole = roleRepository.findByRole("ADMIN");
+//        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+//        userRepository.save(user);
+//	}
 	
 	@Override
 	public User getCurrentUser() {

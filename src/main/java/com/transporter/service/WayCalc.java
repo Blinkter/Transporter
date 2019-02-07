@@ -14,16 +14,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class WayCalc {
 	private static final String API_KEY = "AIzaSyDGBhBYu1xbTGMhT-gHUs2evHxmsLdtSsU";
 	
-	public double calculator(String origin, String destination) throws IOException {
-		OkHttpClient client = new OkHttpClient();
-
-		String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations="
-				+ destination + "&key=" + API_KEY;
-		Request request = new Request.Builder().url(url).build();
-
-		Response response = client.newCall(request).execute();
-		final String json = response.body().string();
-		ObjectMapper mapper = new ObjectMapper();
+//	public double calculator(String origin, String destination) throws IOException {
+//		OkHttpClient client = new OkHttpClient();
+//
+//		String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations="
+//				+ destination + "&key=" + API_KEY;
+//		Request request = new Request.Builder().url(url).build();
+//
+//		Response response = client.newCall(request).execute();
+//		final String json = response.body().string();
+//		ObjectMapper mapper = new ObjectMapper();
 
 
 //		JSONParser parser = new JSONParser();

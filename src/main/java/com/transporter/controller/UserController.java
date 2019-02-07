@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.transporter.model.User;
-import com.transporter.repository.UserRepository;
+import com.transporter.dao.UserRepository;
+import com.transporter.entity.User;
 
 @Controller
 @RequestMapping("/user")

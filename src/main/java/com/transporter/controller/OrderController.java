@@ -1,102 +1,117 @@
 package com.transporter.controller;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.validation.Valid;
-
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.transporter.model.Order;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.transporter.entity.Order;
 import com.transporter.service.OrderService;
-import com.transporter.service.WayCalc;
 
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 
-	private static final String API_KEY = "AIzaSyDGBhBYu1xbTGMhT-gHUs2evHxmsLdtSsU";
-
 	@Autowired
 	private OrderService orderService;
 
-	@GetMapping(path = "/list")
-	public String showAllTransactions(final Model model) {
-
-		final List<Order> transactions = orderService.findAll();
-
-		model.addAttribute("transactions", transactions);
+	// ==================== lista ====================
+	@GetMapping("/list")
+	public String showAllOrders(final Model model) {
+		List<Order> orders = orderService.findAll();
+		model.addAttribute("orders", orders);
 		return "order/list";
 	}
 
-	@GetMapping(path = "/transaction/userlist")
-	public String showTransactionsById(final @RequestParam Long id, final Model model) {
-
-		final List<Order> transactions = orderService.findByUserId(id);
-		model.addAttribute("transactions", transactions);
-		return "transaction/list";
+	// ==================== nowe zamówienie ====================
+	@GetMapping("/order/add")
+	public String showAddOrderForm(final Model model) {
+		model.addAttribute("order", new Order());
+		return "order/order-form";
 	}
 
-	@GetMapping(path = "/transaction/add")
-	public String showAddTransactionForm(final Model model) {
-		model.addAttribute("transaction", new Order());
-		return "transaction/add";
+	// ==================== zapisz ====================
+	@PostMapping("/save")
+	public String saveOrder(@ModelAttribute("employee") Order order, RedirectAttributes redirectAttributes) {
+
+		orderService.save(order);
+		redirectAttributes.addFlashAttribute("message", "Order added/updated");
+		return "redirect:/order/list";
 	}
 
-	@PostMapping("/transaction/add")
-	public String processAddTransactionForm(@Valid @ModelAttribute final Order transaction,
-			BindingResult bindingResult) throws IOException {
+	// =========TEST DISTANCE============
+	@GetMapping("/test")
+	@ResponseBody // ===TO DO=== (na chwilę obecną zamiast widoku)
+	public JSONObject calcDistance(final Model model) throws JsonProcessingException {
 
-		if (bindingResult.hasErrors()) {
-			return "redirect:add";
-		} else {
-			double calc = new WayCalc().calculator(transaction.getOrigin(), transaction.getDestination() );
-			transaction.setDistance(calc);
-			this.orderService.save(transaction);
-			return "redirect:/";
+		// ===TO DO===
+		// klucz przenieść do app.properties
+		final String url = "http://www.mapquestapi.com/directions/v2/route?key=5TsCSRqAOc7GDUhABKy206AnDBVPhAzG";
+
+		// lista miast - to będzie pobierane z formularza
+		ArrayList<String> lista = new ArrayList<>();
+		lista.add("Olsztyn, Polska");
+		lista.add("Warszawa, Polska");
+
+		// można mieszać MAP i JSONObject
+		// lokacje
+		Map<String, ArrayList<String>> locations = new HashMap<String, ArrayList<String>>();
+		locations.put("locations", lista);
+
+		// opcje
+		JSONObject options = new JSONObject();
+		options.put("unit", "k");
+
+		// JSON do przekazania
+		JSONObject json = new JSONObject();
+		json.put("locations", lista);
+		json.put("options", options);
+
+		//kontrolne syso
+		System.out.println(json.toString());
+
+		// ==============Tutaj zaczynam==================================
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<String> entity = new HttpEntity<String>(json.toString(), headers);
+
+		RestTemplate rest = new RestTemplate();
+
+		// send request and parse result
+		ResponseEntity<String> loginResponse = rest.exchange(url, HttpMethod.POST, entity, String.class);
+		
+		if (loginResponse.getStatusCode() == HttpStatus.OK) {
+			JSONObject userJson = new JSONObject(loginResponse.getBody());
+			//kontrolne syso
+			System.out.println(userJson.getJSONObject("route").get("distance"));
+		} else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+			// ===TO DO===
+			// co jeśli błąd ??
 		}
+		
+		// ===TO DO===
+		// dodać widok
+		return json;
 	}
-//TO DO
-//	@GetMapping("/distance")
-//	@ResponseBody
-//	public double Route(@RequestParam("origin") String origin, @RequestParam("destination") String destination)
-//			throws IOException {
-//
-//		OkHttpClient client = new OkHttpClient();
-//
-//		String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + origin + "&destinations="
-//				+ destination + "&key=" + API_KEY;
-//		Request request = new Request.Builder().url(url).build();
-//
-//		Response response = client.newCall(request).execute();
-//		final String json = response.body().string();
-//		
-//		JsonFactory factory = new JsonFactory();
-//		//JsonParser parser = new factory.createParser();
-//
-////		JSONObject jsonobj;
-//		double distance = -1;
-////		try {
-////			jsonobj = (JSONObject) parser.parse(json);
-////			JSONArray dist = (JSONArray) jsonobj.get("rows");
-////			JSONObject obj2 = (JSONObject) dist.get(0);
-////			JSONArray disting = (JSONArray) obj2.get("elements");
-////			JSONObject obj3 = (JSONObject) disting.get(0);
-////			JSONObject obj4 = (JSONObject) obj3.get("distance");
-////			JSONObject obj5 = (JSONObject) obj3.get("duration");
-////			distance = Integer.parseInt(obj4.get("value").toString());
-////			return distance;
-////		} catch (ParseException e) {
-////			e.printStackTrace();
-////		}
-//		return distance;
-//	}
+
 }

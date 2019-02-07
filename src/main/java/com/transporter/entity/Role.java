@@ -1,4 +1,4 @@
-package com.transporter.model;
+package com.transporter.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +12,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Entity
-@Table(name = "role")
+//@Data
+//@Entity
+//@Table(name = "role")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,6 @@ public class Role {
 	public Role() {}
 
 	public Role(Long id, String role) {
-		super();
 		this.id = id;
 		this.role = role;
 	}

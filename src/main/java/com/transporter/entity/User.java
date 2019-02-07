@@ -1,4 +1,4 @@
-package com.transporter.model;
+package com.transporter.entity;
 
 import java.util.Set;
 
@@ -18,9 +18,9 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
 
-@Data
-@Entity
-@Table(name = "user")
+//@Data
+//@Entity
+//@Table(name = "user")
 public class User {
 
 	@Id

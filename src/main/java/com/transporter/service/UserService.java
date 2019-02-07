@@ -1,6 +1,6 @@
 package com.transporter.service;
 
-import com.transporter.model.User;
+import com.transporter.entity.User;
 
 public interface UserService {
 

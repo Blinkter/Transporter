@@ -1,9 +1,9 @@
-package com.transporter.repository;
+package com.transporter.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.transporter.model.User;
+import com.transporter.entity.User;
 
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User, Long>{

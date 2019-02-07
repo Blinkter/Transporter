@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.transporter.model.User;
-import com.transporter.repository.DriverRepository;
-import com.transporter.repository.UserRepository;
+import com.transporter.dao.UserRepository;
+import com.transporter.entity.User;
 import com.transporter.service.UserService;
 
 @Controller
@@ -29,16 +28,13 @@ public class LoginController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private DriverRepository driverRepository;
-
-	@GetMapping("/")
-	public ModelAndView index11() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("templates/login");
-		modelAndView.addObject("message", "Baeldung");
-		return modelAndView;
-	}
+//	@GetMapping("/")
+//	public ModelAndView index11() {
+//		ModelAndView modelAndView = new ModelAndView();
+//		modelAndView.setViewName("templates/login");
+//		modelAndView.addObject("message", "Baeldung");
+//		return modelAndView;
+//	}
 	
 	@GetMapping("/login")
 	public ModelAndView login() {
@@ -64,37 +60,37 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
-        if (userExists != null) {
-            bindingResult
-                    .rejectValue("email", "error.user",
-                            "There is already a user registered with the email provided");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
-        } else {
-            userService.saveUser(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("registration");
+//    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+//    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        User userExists = userService.findUserByEmail(user.getEmail());
+//        if (userExists != null) {
+//            bindingResult
+//                    .rejectValue("email", "error.user",
+//                            "There is already a user registered with the email provided");
+//        }
+//        if (bindingResult.hasErrors()) {
+//            modelAndView.setViewName("registration");
+//        } else {
+//            userService.saveUser(user);
+//            modelAndView.addObject("successMessage", "User has been registered successfully");
+//            modelAndView.addObject("user", new User());
+//            modelAndView.setViewName("registration");
+//
+//        }
+//        return modelAndView;
+//    }
 
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value="/admin/home", method = RequestMethod.GET)
-    public ModelAndView home(){
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("admin/home");
-        return modelAndView;
-    }
+//    @RequestMapping(value="/admin/home", method = RequestMethod.GET)
+//    public ModelAndView home(){
+//        ModelAndView modelAndView = new ModelAndView();
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userService.findUserByEmail(auth.getName());
+//        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+//        modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
+//        modelAndView.setViewName("admin/home");
+//        return modelAndView;
+//    }
 
 	// ============INDEX================
 	@GetMapping("/index")
