@@ -1,26 +1,16 @@
 package com.transporter.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,7 +33,7 @@ public class OrderController {
 	}
 
 	// ==================== nowe zamówienie ====================
-	@GetMapping("/order/add")
+	@GetMapping("/addForm")
 	public String showAddOrderForm(final Model model) {
 		model.addAttribute("order", new Order());
 		return "order/order-form";
@@ -51,67 +41,36 @@ public class OrderController {
 
 	// ==================== zapisz ====================
 	@PostMapping("/save")
-	public String saveOrder(@ModelAttribute("employee") Order order, RedirectAttributes redirectAttributes) {
-
+	public String saveOrder(@ModelAttribute("order") Order order, RedirectAttributes redirectAttributes) {
+		try {
+			Double distance = orderService.calcDistance(order.getOrigin(), order.getDestination());
+			order.setDistance(distance);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		orderService.save(order);
-		redirectAttributes.addFlashAttribute("message", "Order added/updated");
+		redirectAttributes.addFlashAttribute("message", "Przejazd dodany");
 		return "redirect:/order/list";
-	}
+	} 
 
+	//==================== Edycja ====================
+		@GetMapping("/editForm/{orderId}")
+		public String showEditForm(@PathVariable Long orderId, Model theModel) {
+			theModel.addAttribute("order", orderService.findById(orderId));
+			return "/order/order-form";
+		}
+	
 	// =========TEST DISTANCE============
 	@GetMapping("/test")
 	@ResponseBody // ===TO DO=== (na chwilę obecną zamiast widoku)
-	public JSONObject calcDistance(final Model model) throws JsonProcessingException {
+	public String calcDist(final Model model) throws JsonProcessingException {
 
-		// ===TO DO===
-		// klucz przenieść do app.properties
-		final String url = "http://www.mapquestapi.com/directions/v2/route?key=5TsCSRqAOc7GDUhABKy206AnDBVPhAzG";
-
-		// lista miast - to będzie pobierane z formularza
-		ArrayList<String> lista = new ArrayList<>();
-		lista.add("Olsztyn, Polska");
-		lista.add("Warszawa, Polska");
-
-		// można mieszać MAP i JSONObject
-		// lokacje
-		Map<String, ArrayList<String>> locations = new HashMap<String, ArrayList<String>>();
-		locations.put("locations", lista);
-
-		// opcje
-		JSONObject options = new JSONObject();
-		options.put("unit", "k");
-
-		// JSON do przekazania
-		JSONObject json = new JSONObject();
-		json.put("locations", lista);
-		json.put("options", options);
-
-		//kontrolne syso
-		System.out.println(json.toString());
-
-		// ==============Tutaj zaczynam==================================
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		HttpEntity<String> entity = new HttpEntity<String>(json.toString(), headers);
-
-		RestTemplate rest = new RestTemplate();
-
-		// send request and parse result
-		ResponseEntity<String> loginResponse = rest.exchange(url, HttpMethod.POST, entity, String.class);
-		
-		if (loginResponse.getStatusCode() == HttpStatus.OK) {
-			JSONObject userJson = new JSONObject(loginResponse.getBody());
-			//kontrolne syso
-			System.out.println(userJson.getJSONObject("route").get("distance"));
-		} else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-			// ===TO DO===
-			// co jeśli błąd ??
-		}
-		
+//		orderService.calcDistance();
 		// ===TO DO===
 		// dodać widok
-		return json;
+		return "Work in progress";
 	}
 
 }
