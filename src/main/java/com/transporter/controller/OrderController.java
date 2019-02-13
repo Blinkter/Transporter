@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.transporter.entity.Order;
 import com.transporter.service.OrderService;
+import com.transporter.service.UserService;
 
 @Controller
 @RequestMapping("/order")
@@ -23,6 +24,9 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private UserService userService;
 
 	// ==================== lista ====================
 	@GetMapping("/list")
@@ -45,6 +49,7 @@ public class OrderController {
 		try {
 			Double distance = orderService.calcDistance(order.getOrigin(), order.getDestination());
 			order.setDistance(distance);
+			order.setUser(userService.getCurrentUser());
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,11 +61,11 @@ public class OrderController {
 	} 
 
 	//==================== Edycja ====================
-		@GetMapping("/editForm/{orderId}")
-		public String showEditForm(@PathVariable Long orderId, Model theModel) {
-			theModel.addAttribute("order", orderService.findById(orderId));
-			return "/order/order-form";
-		}
+	@GetMapping("/editForm/{orderId}")
+	public String showEditForm(@PathVariable Long orderId, Model theModel) {
+		theModel.addAttribute("order", orderService.findById(orderId));
+		return "/order/order-form";
+	}
 	
 	// =========TEST DISTANCE============
 	@GetMapping("/test")

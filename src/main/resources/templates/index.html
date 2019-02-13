@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8"/>
-    <title>START</title>
-    <link href="../static/css/style.css"
-          th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Hello page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-<h1 class="home">Choose table</h1>
-<div class="table">
-    <ul>
-        <li><a href="branches">Branches</a></li>
-        <li><a href="customers">Customers</a></li>
-        <li><a href="transactions">Transactions</a></li>
-    </ul>
-</div>
+
+	<h2>Bla Bla Vehicle</h2>
+	
+	<h3>
+	Wspólna podróż lub przewóz rzeczy
+	</h3>
+	
+	<p>Lista wszystkich przejazdów - <a th:href="@{'/order/list'}">tutaj</a></p>
+	<p>Dodaj przejazd - <a th:href="@{'/order/addForm'}">tutaj</a></p>
+	<p>Szukaj przejazdu - TO DO</p>
+	
 </body>
 </html>

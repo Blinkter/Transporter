@@ -12,9 +12,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Data
-//@Entity
-//@Table(name = "role")
+@Data
+@Entity
+@Table(name = "role")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

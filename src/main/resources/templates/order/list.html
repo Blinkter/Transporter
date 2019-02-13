@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+		integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+		crossorigin="anonymous">
+		
+	<title>Przejazdy - lista</title>
+</head>
+<body>
+
+<div class="container">
+	<h3>Przejazdy - lista</h3>
+	<hr>
+
+	<a th:href="@{/order/addForm}"
+		class="btn btn-primary btn-sm mb-3">
+		Dodaj przejazd
+	</a>
+
+	<div th:if="${message}" class="alert alert-success" role="alert">
+		<p th:text="${message}">success message</p>
+	</div>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>Początek trasy</th>
+				<th>Koniec trasy</th>
+				<th>Data przejazdu</th>
+				<th>Odległość</th>
+				<th>Cena</th>
+				<th>Opcje</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr th:each="tempOrder : ${orders}">
+				<td th:text="${tempOrder.origin}" />
+				<td th:text="${tempOrder.destination}" />
+				<td th:text="${tempOrder.plannedDate}" />
+				<td th:text="${tempOrder.distance}" />
+				<td th:text="${tempOrder.price}" />
+				<td>
+				
+					<a th:href="@{'/order/editForm/' + ${tempOrder.id}}"
+					class="btn btn-info btn-sm mb-3">
+					Edycja
+					</a>
+					
+					<a th:href="@{'/employees/delete/' + ${tempOrder.id}}"
+					class="btn btn-danger btn-sm mb-3">
+					Usuń
+					</a>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+</body>
+</html>

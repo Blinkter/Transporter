@@ -8,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -34,7 +38,8 @@ public class Order {
 	@Column(name = "description")	
 	private String description;
 	// -----------------------------------------------------------------------------
-	@NotEmpty
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "planned_date")	
 	private LocalDate plannedDate;
 	// -----------------------------------------------------------------------------
@@ -43,17 +48,21 @@ public class Order {
 	private Float price;
 	// -----------------------------------------------------------------------------	
 	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 
 	public Order() {
 	}
 
 	public Order(Long id, String origin, String destination, String description, Date plannedDate, Double distance,
-			Float price, Date acceptedDate) {
+			Float price, Date acceptedDate, User user) {
 		this.id = id;
 		this.origin = origin;
 		this.destination = destination;
 		this.description = description;
 		this.distance = distance;
 		this.price = price;
+		this.user = user;
 	}
 }

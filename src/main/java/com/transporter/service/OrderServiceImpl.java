@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 		// klucz przenieść do app.properties
 		final String url = "http://www.mapquestapi.com/directions/v2/route?key=5TsCSRqAOc7GDUhABKy206AnDBVPhAzG";
 
-		// lista miast - to będzie pobierane z formularza
+		
 		ArrayList<String> lista = new ArrayList<>();
 		lista.add(origin + ", Polska");
 		lista.add(destination + ", Polska");
@@ -110,6 +110,11 @@ public class OrderServiceImpl implements OrderService {
 			JSONObject userJson = new JSONObject(loginResponse.getBody());
 			
 			distance = (Double) userJson.getJSONObject("route").get("distance");
+			
+			// Zaokrąglenie do 2 miejsca po przecinku
+			distance *= 100;
+			distance = Math.round(distance);
+			distance /= 100;
 			
 			// kontrolne syso
 			System.out.println(distance);
